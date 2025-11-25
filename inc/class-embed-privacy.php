@@ -959,12 +959,41 @@ class Embed_Privacy {
 					continue;
 				}
 
+				// get element content for checking - blockquote needs special handling
+				$element_content = '';
+				$element_url = '';
+				
+				if ( $tag === 'blockquote' ) {
+					// for blockquote, get HTML content and extract URLs from links
+					$element_content = $dom->saveHTML( $element );
+					
+					// try to get URL from links inside blockquote
+					foreach ( $element->getElementsByTagName( 'a' ) as $link ) {
+						$href = $link->getAttribute( 'href' );
+						if ( ! empty( $href ) ) {
+							$element_url = $href;
+							$element_content .= ' ' . $href;
+							break; // use first link found
+						}
+					}
+					
+					// also check class attribute for provider identification (e.g., twitter-tweet, instagram-media)
+					$class = $element->getAttribute( 'class' );
+					if ( ! empty( $class ) ) {
+						$element_content .= ' ' . $class;
+					}
+				} else {
+					$element_content = $element->getAttribute( $args['element_attribute'] );
+					$element_url = $element_content;
+				}
+
 				// ignore embeds from the same (sub-)domain
-				if ( \preg_match( '/https?:\/\/(.*\.)?' . \preg_quote( $host, '/' ) . '/', $element->getAttribute( $args['element_attribute'] ) ) ) {
+				if ( ! empty( $element_content ) && \preg_match( '/https?:\/\/(.*\.)?' . \preg_quote( $host, '/' ) . '/', $element_content ) ) {
 					continue;
 				}
 
-				if ( ! empty( $args['regex'] ) && ! \preg_match( $args['regex'], $element->getAttribute( $args['element_attribute'] ) ) ) {
+				// check regex against element content
+				if ( ! empty( $args['regex'] ) && ! empty( $element_content ) && ! \preg_match( $args['regex'], $element_content ) ) {
 					continue;
 				}
 
@@ -979,13 +1008,43 @@ class Embed_Privacy {
 				}
 
 				if ( $is_empty_provider ) {
-					$parsed_url = wp_parse_url( $element->getAttribute( $args['element_attribute'] ) );
+					$url_to_parse = $tag === 'blockquote' ? $element_url : $element->getAttribute( $args['element_attribute'] );
+					$parsed_url = wp_parse_url( $url_to_parse );
 
 					// embeds with relative paths have no host
 					// and they are local by definition, so do nothing
 					// see https://github.com/epiphyt/embed-privacy/issues/27
 					if ( empty( $parsed_url['host'] ) ) {
-						return $content;
+						// for blockquote, try to extract URL from links inside or class attribute
+						if ( $tag === 'blockquote' ) {
+							// try links first
+							if ( empty( $element_url ) ) {
+								foreach ( $element->getElementsByTagName( 'a' ) as $link ) {
+									$href = $link->getAttribute( 'href' );
+									if ( ! empty( $href ) ) {
+										$parsed_url = wp_parse_url( $href );
+										if ( ! empty( $parsed_url['host'] ) ) {
+											$element_url = $href;
+											break;
+										}
+									}
+								}
+							}
+							
+							// if still no host, check class attribute for provider hints
+							if ( empty( $parsed_url['host'] ) ) {
+								$class = $element->getAttribute( 'class' );
+								if ( \strpos( $class, 'twitter' ) !== false || \strpos( $class, 'tweet' ) !== false ) {
+									$parsed_url = [ 'host' => 'twitter.com' ];
+								} else if ( \strpos( $class, 'instagram' ) !== false ) {
+									$parsed_url = [ 'host' => 'instagram.com' ];
+								} else {
+									return $content;
+								}
+							}
+						} else {
+							return $content;
+						}
 					}
 
 					$embed_provider           = $parsed_url['host'];
@@ -1011,7 +1070,8 @@ class Embed_Privacy {
 							continue;
 						}
 
-						if ( \preg_match( $regex, $element->getAttribute( $args['element_attribute'] ) ) && empty( $replacements ) ) {
+						$content_to_match = $tag === 'blockquote' ? $element_content : $element->getAttribute( $args['element_attribute'] );
+						if ( \preg_match( $regex, $content_to_match ) && empty( $replacements ) ) {
 							continue 2;
 						}
 					}
@@ -1019,7 +1079,14 @@ class Embed_Privacy {
 
 				/* translators: embed title */
 				$args['embed_title'] = ! empty( $element->getAttribute( 'title' ) ) ? \sprintf( \__( '"%s"', 'embed-privacy' ), $element->getAttribute( 'title' ) ) : '';
-				$args['embed_url']   = $element->getAttribute( $args['element_attribute'] );
+				
+				// get embed URL - for blockquote, use extracted URL or content
+				if ( $tag === 'blockquote' ) {
+					$args['embed_url'] = ! empty( $element_url ) ? $element_url : $element_content;
+				} else {
+					$args['embed_url'] = $element->getAttribute( $args['element_attribute'] );
+				}
+				
 				$args['height']      = ! empty( $element->getAttribute( 'height' ) ) ? $element->getAttribute( 'height' ) : 0;
 				$args['width']       = ! empty( $element->getAttribute( 'width' ) ) ? $element->getAttribute( 'width' ) : 0;
 

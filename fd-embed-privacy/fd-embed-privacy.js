@@ -126,6 +126,7 @@ function fd_overlayClick( target ) {
 		if ( scriptTags[ n ].src ) {
 			// if script tag has a src attribute
 			element.src = scriptTags[ n ].src;
+			element.classList.add('test-embed');
 		}
 		else {
 			// if script tag has content
@@ -175,6 +176,7 @@ function fd_ep_htmlentities_decode( content ) {
 	var textarea = document.createElement( 'textarea' );
 	// phpcs:ignore WordPressVIPMinimum.JS.InnerHTML.Found
 	textarea.innerHTML = content;
+	textarea.classList.add('test-embed-textsarea')
 	
 	return textarea.value;
 }

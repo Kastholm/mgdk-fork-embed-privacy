@@ -57,41 +57,40 @@ define( 'FD_EMBEDPRIVACY', '1.0.1' );
 			. 'Klik her for at vise eksternt indhold fra %s, anbefalet af redaktionen. Du kan altid aktivere og deaktivere tredjepartsindhold.'
 			. '</h5>'
 			. '<div style="width: 280px; height: 150px; margin: 0 auto; padding: 30px 0;">'
-			. '<img style="width:100%%; height:100%%; object-fit:contain; margin: 0 auto; opacity: 70%%;" src="%s" /></div>'
+			. '<img style="width:100%%; height:100%%; object-fit:contain; margin: 0 auto;" src="%s" /></div>'
 			. '<h5 class="fd-embed-privacy-content-line2">'
 			. 'Du accepterer hermed at vise eksternt tredjepartsindhold. Persondata kan blive sendt til udbyderen af indholdet og andre tredjepartstjenester.'
 			. '</h5>';
 		}
 		elseif(str_contains($test, '.de')) {
 			$html =
-			 '<p></p>'
-			. '<div style="width: 280px; height: 150px; margin: 0 auto; padding: 30px 0;">'
-			. '<img style="width:100%%; height:100%%; object-fit:contain; margin: 0 auto; opacity: 70%%;" src="%s" /></div>'
-			. '<h5 class="fd-embed-privacy-content-line1">'
+			'<h5 class="fd-embed-privacy-content-line1">'
 			. 'Klicken Sie hier, um externe Inhalte von %s anzuzeigen, empfohlen von der Redaktion. Sie können Drittanbieter-Inhalte jederzeit aktivieren oder deaktivieren.'
 			. '</h5>'
+			. '<div style="width: 280px; height: 150px; margin: 0 auto; padding: 30px 0;">'
+			. '<img style="width:100%%; height:100%%; object-fit:contain; margin: 0 auto;" src="%s" /></div>'
 			. '<h5 class="fd-embed-privacy-content-line2">'
 			. 'Sie stimmen zu, externe Inhalte von Drittanbietern anzuzeigen. Es ist möglich, dass personenbezogene Daten an den Anbieter der Inhalte und andere Drittanbieter-Dienste übermittelt werden.'
 			. '</h5>';
 		}
 		elseif(str_contains($test, 'se')) {
 			$html =
-			'<div style="width: 280px; height: 150px; margin: 0 auto; padding: 30px 0;">'
-			. '<img style="width:100%%; height:100%%; object-fit:contain; margin: 0 auto; opacity: 70%%;" src="%s" /></div>'
-			. '<h5 class="fd-embed-privacy-content-line1">'
+			'<h5 class="fd-embed-privacy-content-line1">'
 			. 'Klicka här för att visa externt innehåll från %s, rekommenderat av redaktionen. Du kan alltid aktivera och inaktivera tredjepartsinnehåll.'
 			. '</h5>'
+			. '<div style="width: 280px; height: 150px; margin: 0 auto; padding: 30px 0;">'
+			. '<img style="width:100%%; height:100%%; object-fit:contain; margin: 0 auto;" src="%s" /></div>'
 			. '<h5 class="fd-embed-privacy-content-line2">'
 			. 'Du godkänner att visa externt innehåll från tredje part. Personuppgifter kan skickas till innehållsleverantören och andra tredjepartstjänster.'
 			. '</h5>';
 		}
 		elseif(str_contains($test, 'no')) {
 			$html =
-			'<div style="width: 280px; height: 150px; margin: 0 auto; padding: 30px 0;">'
-			. '<img style="width:100%%; height:100%%; object-fit:contain; margin: 0 auto; opacity: 70%%;" src="%s" /></div>'
-			. '<h5 class="fd-embed-privacy-content-line1">'
+			'<h5 class="fd-embed-privacy-content-line1">'
 			. 'Klikk her for å vise eksternt innhold fra %s, anbefalt av redaksjonen. Du kan alltid aktivere og deaktivere tredjepartsinnhold.'
 			. '</h5>'
+			. '<div style="width: 280px; height: 150px; margin: 0 auto; padding: 30px 0;">'
+			. '<img style="width:100%%; height:100%%; object-fit:contain; margin: 0 auto;" src="%s" /></div>'
 			. '<h5 class="fd-embed-privacy-content-line2">'
 			. 'Du godtar å vise eksternt tredjepartsinnhold. Personopplysninger kan bli sendt til leverandøren av innholdet og andre tredjepartstjenester.'
 			. '</h5>';
@@ -102,7 +101,7 @@ define( 'FD_EMBEDPRIVACY', '1.0.1' );
 			. 'Click here to display external content from %s, recommended by the editors. You can always enable and disable third-party content.'
 			. '</h5>'
 			.'<div style="width: 280px; height: 150px; margin: 0 auto; padding: 30px 0;">'
-			. '<img style="width:100%%; height:100%%; object-fit:contain; margin: 0 auto; opacity: 70%%;" src="%s" /></div>'
+			. '<img style="width:100%%; height:100%%; object-fit:contain; margin: 0 auto;" src="%s" /></div>'
 			. '<h5 class="fd-embed-privacy-content-line2">'
 			. 'You agree to display external third-party content. Personal data may be sent to the provider of the content and other third-party services.'
 			. '</h5>';
