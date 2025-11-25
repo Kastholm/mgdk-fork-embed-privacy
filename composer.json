@@ -1,0 +1,28 @@
+{
+    "name": "funke-pe/fd-og-embed-privacy",
+    "description": "Embed Privacy FD fork",
+    "authors": [
+        {
+            "name": "Funke Digital GmbH",
+            "email": "digitalteam@funkemedien.de"
+        }
+    ],
+    "require": {
+        "php": ">= 8.1"
+    },
+    "require-dev": {
+        "automattic/vipwpcs": "*",
+		"dealerdirect/phpcodesniffer-composer-installer": "*",
+        "phpcompatibility/php-compatibility": "dev-develop"
+    },
+    "type": "wordpress-plugin",
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
+    "scripts": {
+        "csgo": "./vendor/bin/phpcs --standard=WordPress-VIP-Go --ignore=*/vendor/*,*/node_modules/*,*.js,*.css -s ./",
+        "csphp": "./vendor/bin/phpcs --standard=PHPCompatibility --runtime-set testVersion 8.3 --ignore=*/vendor/*,*/node_modules/*,*.js,*.css -s ./"
+    }
+}

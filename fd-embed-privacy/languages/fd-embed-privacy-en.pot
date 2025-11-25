@@ -1,0 +1,46 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: fd-embed-provacy\n"
+"POT-Creation-Date: 2023-02-15 16:52+0100\n"
+"PO-Revision-Date: 2023-02-15 14:33+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.2.2\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-KeywordsList: __\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: fd-embed-privacy.php:33
+msgid "Click here to display external content from"
+msgstr ""
+
+#: fd-embed-privacy.php:35
+msgid "recommended by the editors. You can always enable and disable third-party content."
+msgstr ""
+
+#: fd-embed-privacy.php:38
+msgid "You agree to display external third-party content. It is possible, that personal data will be send to the provider of the content and other third-party services."
+msgstr ""
+
+#: fd-embed-privacy.php:57
+#, php-format
+msgid "Enable/Disable recommended external content from %s"
+msgstr ""
+
+#: fd-embed-privacy.php:59
+msgid "External content"
+msgstr ""
+
+#: fd-embed-privacy.php:60
+msgid "Read more about in our"
+msgstr ""
+
+#: fd-embed-privacy.php:61
+msgid "Privacy statement"
+msgstr ""

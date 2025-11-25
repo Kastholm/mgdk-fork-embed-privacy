@@ -1,0 +1,170 @@
+/**
+ * Embed Privacy design file.
+ * 
+ * @author	Epiphyt
+ * @license	GPL2
+ * @package	epiphyt\Embed_Privacy
+ */
+.embed-privacy-container {
+	background-position: center;
+	background-size: cover;
+	margin-bottom: 1.5em;
+	position: relative;
+	
+	a {
+		color: #ddd;
+		
+		&:active,
+		&:focus,
+		&:hover {
+			color: #fff !important;
+		}
+	}
+	
+	&.is-enabled {
+		background-image: none !important;
+	}
+	
+	&:last-child {
+		margin-bottom: 0;
+	}
+}
+
+.embed-privacy-content {
+	display: none;
+	height: 100%;
+	width: 100%;
+	
+	// make sure centered elements are centered if body doesn't contain
+	// the class .wp-embed-responsive
+	// see https://github.com/epiphyt/embed-privacy/issues/66
+	.aligncenter & {
+		> * {
+			display: block;
+			margin-left: auto;
+			margin-right: auto;
+		}
+	}
+	
+	.is-enabled & {
+		display: block;
+	}
+}
+
+.embed-privacy-overlay {
+	background-color: rgba(0, 0, 0, .7);
+	box-sizing: border-box;
+	color: #ddd;
+	cursor: pointer;
+	display: table;
+	height: 100%;
+	max-width: 100%;
+	min-height: 200px;
+	padding: 20px;
+	position: relative;
+	transition: background-color .25s ease-in-out, color .25s ease-in-out;
+	width: 100%;
+	z-index: 100;
+	
+	@media (min-width: 768px) {
+		min-height: 300px;
+	}
+	
+	label,
+	p {
+		color: #ddd;
+		cursor: pointer;
+		font-weight: 400;
+		text-align: center;
+		transition: color .25s ease-in-out;
+	}
+	
+	label,
+	.embed-privacy-input-wrapper {
+		margin: 0;
+	}
+	
+	.embed-privacy-footer {
+		display: table-footer-group;
+		font-size: .85em;
+		text-align: right;
+	}
+	
+	&:hover {
+		background-color: rgba(0, 0, 0, .8);
+		color: #fff;
+		
+		.embed-privacy-logo {
+			opacity: 1;
+		}
+		
+		label,
+		p {
+			color: #fff;
+		}
+	}
+}
+
+.embed-privacy-inner {
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.embed-privacy-logo {
+	background-position: center top;
+	background-repeat: no-repeat;
+	background-size: contain;
+	height: 48px;
+	margin-bottom: 30px;
+	opacity: .8;
+	transition: opacity .25s ease-in-out;
+}
+
+// make sure responsive Gutenberg blocks don't have too much space
+.wp-embed-responsive .wp-block-embed {
+	&.wp-embed-aspect-21-9,
+	&.wp-embed-aspect-18-9,
+	&.wp-embed-aspect-16-9,
+	&.wp-embed-aspect-4-3,
+	&.wp-embed-aspect-1-1,
+	&.wp-embed-aspect-9-16,
+	&.wp-embed-aspect-1-2 {
+		.embed-privacy-container {
+			bottom: 0;
+			height: 100%;
+			left: 0;
+			position: absolute;
+			right: 0;
+			top: 0;
+			width: 100%;
+		}
+	}
+}
+
+// shortcode
+.embed-privacy-provider {
+	&.is-hidden {
+		display: none;
+	}
+}
+
+.embed-privacy-opt-out-label {
+	display: inline-block;
+}
+
+.is-disabled {
+	+ .embed-privacy-opt-out-label > .embed-privacy-provider-is-enabled {
+		display: none;
+	}
+}
+
+.is-enabled {
+	+ .embed-privacy-opt-out-label > .embed-privacy-provider-is-disabled {
+		display: none;
+	}
+}
+
+// local tweets
+.embed-privacy-local-tweet {
+	font-style: normal;
+}

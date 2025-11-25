@@ -1,0 +1,23 @@
+{
+    "name": "funke-pe/fd-embed-privacy",
+    "description": "Plugin that extend the Standard Embed Privacy Plugin",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+      {
+        "name": "Funke Digital GmbH",
+        "email": "digitalteam@funkemedien.de"
+      }
+    ],
+    "require-dev": {
+      "automattic/vipwpcs": "*",
+      "dealerdirect/phpcodesniffer-composer-installer": "*",
+      "phpcompatibility/phpcompatibility-wp": "*",
+      "phpunit/phpunit": "*"
+    },
+    "config": {
+      "allow-plugins": {
+          "dealerdirect/phpcodesniffer-composer-installer": true
+      }
+    },    
+    "type": "wordpress-plugin"
+  }

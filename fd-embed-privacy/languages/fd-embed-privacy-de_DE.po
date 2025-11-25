@@ -1,0 +1,55 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: fd-embed-provacy\n"
+"POT-Creation-Date: 2023-02-15 16:52+0100\n"
+"PO-Revision-Date: 2023-02-15 16:55+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: de_DE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.2.2\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-KeywordsList: __\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: fd-embed-privacy.php:33
+msgid "Click here to display external content from"
+msgstr "An dieser Stelle befindet sich ein externer Inhalt von"
+
+#: fd-embed-privacy.php:35
+msgid ""
+"recommended by the editors. You can always enable and disable third-party "
+"content."
+msgstr ""
+"der von unserer Redaktion empfohlen wird. Er ergänzt den Artikel und kann "
+"mit einem Klick angezeigt und wieder ausgeblendet werden."
+
+#: fd-embed-privacy.php:38
+msgid ""
+"You agree to display external third-party content. It is possible, that "
+"personal data will be send to the provider of the content and other third-"
+"party services."
+msgstr ""
+"Ich bin damit einverstanden, dass mir dieser externe Inhalt angezeigt wird. "
+"Es können dabei personenbezogene Daten an den Anbieter des Inhalts und "
+"Drittdienste übermittelt werden."
+
+#: fd-embed-privacy.php:57
+#, php-format
+msgid "Enable/Disable recommended external content from %s"
+msgstr "Empfohlene externe Inhalte von %s ein-/ausschalten"
+
+#: fd-embed-privacy.php:59
+msgid "External content"
+msgstr "Externer Inhalt"
+
+#: fd-embed-privacy.php:60
+msgid "Read more about in our"
+msgstr "Mehr dazu in unserer"
+
+#: fd-embed-privacy.php:61
+msgid "Privacy statement"
+msgstr "Datenschutzerklärung"
