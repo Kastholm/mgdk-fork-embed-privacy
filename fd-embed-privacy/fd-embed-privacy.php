@@ -59,7 +59,7 @@ define( 'FD_EMBEDPRIVACY', '1.0.1' );
 		if(str_contains($test, '.dk')) {
 			$html =
 			'<h5 class="fd-embed-privacy-content-line1" style="font-size: 20px">'
-			. 'Klik her for at vise eksternt indhold fra <b>%s</b>, anbefalet af redaktionen. Du kan altid aktivere og deaktivere tredjepartsindhold.'
+			. 'Klik for at vise eksternt indhold fra <b>%s</b>, <br/> <span  style="font-size: 14px">- Du kan altid aktivere og deaktivere tredjepartsindhold.</span>'
 			. '</h5>'
 			. '<div style="width: 280px; height: 150px; margin: 0 auto; padding: 30px 0;">'
 			. '<img style="width:100%%; height:100%%; object-fit:contain; margin: 0 auto;" src="%s" /></div>'
