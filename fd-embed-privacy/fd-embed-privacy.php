@@ -26,37 +26,22 @@ define( 'FD_EMBEDPRIVACY', '1.0.1' );
 \add_filter( 'embed_privacy_content', function( $content, $provider) {
 
 
-    	$test = $_SERVER['SERVER_NAME'];
+    	$domain = $_SERVER['SERVER_NAME'];
 		$html = 'Embed not set';
-		$media = '';
 
-		if(str_contains($provider, 'youtube.com') || str_contains($provider, 'youtu.be')){
-			$media = \plugins_url( '../assets/images/embed-youtube.png', __FILE__ );
-		}
-		else if(str_contains($provider, 'facebook.com')) {
-			$media = \plugins_url( '../assets/images/embed-facebook.png', __FILE__ );
-		}
-		else if(str_contains($provider, 'x.com') || str_contains($provider, 'twitter.com')  || str_contains($provider, 't.co')) {
-			$media = \plugins_url( '../assets/images/embed-twitter.png', __FILE__ );
-		}
-		else if(str_contains($provider, 'instagram.com')) {
-			$media = \plugins_url( '../assets/images/embed-instagram.png', __FILE__ );
-		}
-		else if(str_contains($provider, 'linkedin.com')) {
-			$media = \plugins_url( '../assets/images/embed-linkedin.png', __FILE__ );
-		}
-		else if(str_contains($provider, 'pinterest.com')) {
-			$media = \plugins_url( '../assets/images/embed-pinterest.png', __FILE__ );
-		}
-		else if(str_contains($provider, 'tiktok.com')) {
-			$media = \plugins_url( '../assets/images/embed-tiktok.png', __FILE__ );
-		}
-
+		#Break down the string to be shorter.
 		if (str_contains($provider, 'www')) {
 			$provider = str_replace('www.', '', $provider);
 		}
+		if (str_contains($provider, '.com')) {
+			$provider = str_replace('.com', '', $provider);
+		}
+
+		#Dynamic name to choose medai image.
+		$media = \plugins_url( "../assets/images/embed-{$provider}.png", __FILE__ );
 		
-		if(str_contains($test, '.dk')) {
+		#Decide which language from the URI 
+		if(str_contains($domain, '.dk')) {
 			$html =
 			'<h5 class="fd-embed-privacy-content-line1" style="font-size: 20px">'
 			. 'Klik for at vise eksternt indhold fra <b>%s</b>, <br/> <span  style="font-size: 14px">- Du kan altid aktivere og deaktivere tredjepartsindhold.</span>'
@@ -67,7 +52,7 @@ define( 'FD_EMBEDPRIVACY', '1.0.1' );
 			. 'Du accepterer hermed at vise eksternt tredjepartsindhold. Persondata kan blive sendt til udbyderen af indholdet og andre tredjepartstjenester.'
 			. '</h5>';
 		}
-		elseif(str_contains($test, '.de')) {
+		elseif(str_contains($domain, '.de')) {
 			$html =
 			'<h5 class="fd-embed-privacy-content-line1" style="font-size: 20px">'
 			. 'Klicken Sie hier, um externe Inhalte von <b>%s</b> anzuzeigen, <br/> <span  style="font-size: 14px">- Sie können Drittanbieter-Inhalte jederzeit aktivieren oder deaktivieren.</span>'
@@ -78,7 +63,7 @@ define( 'FD_EMBEDPRIVACY', '1.0.1' );
 			. 'Sie stimmen zu, externe Inhalte von Drittanbietern anzuzeigen. Es ist möglich, dass personenbezogene Daten an den Anbieter der Inhalte und andere Drittanbieter-Dienste übermittelt werden.'
 			. '</h5>';
 		}
-		elseif(str_contains($test, 'se')) {
+		elseif(str_contains($domain, 'se')) {
 			$html =
 			'<h5 class="fd-embed-privacy-content-line1" style="font-size: 20px">'
 			. 'Klicka för att visa externt innehåll från <b>%s</b>, <br/> <span  style="font-size: 14px">- Du kan alltid aktivera och inaktivera tredjepartsinnehåll.</span>'
@@ -89,7 +74,7 @@ define( 'FD_EMBEDPRIVACY', '1.0.1' );
 			. 'Du godkänner att visa externt innehåll från tredje part. Personuppgifter kan skickas till innehållsleverantören och andra tredjepartstjänster.'
 			. '</h5>';
 		}
-		elseif(str_contains($test, 'no')) {
+		elseif(str_contains($domain, 'no')) {
 			$html =
 			'<h5 class="fd-embed-privacy-content-line1" style="font-size: 20px">'
 			. 'Klikk for å vise eksternt innhold fra <b>%s</b>, <br/> <span  style="font-size: 14px">- Du kan alltid aktivere og deaktivere tredjepartsinnhold.</span>'
@@ -112,7 +97,7 @@ define( 'FD_EMBEDPRIVACY', '1.0.1' );
 			. '</h5>';
 		}
 		
-		return sprintf($html, $provider, $media,  $test);
+		return sprintf($html, $provider, $media,  $domain);
 }, 10, 2);
 
 \add_filter( 'embed_privacy_markup', function( $markup, $provider ) {
