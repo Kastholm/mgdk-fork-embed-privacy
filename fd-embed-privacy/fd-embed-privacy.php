@@ -25,6 +25,7 @@ define( 'FD_EMBEDPRIVACY', '1.0.1' );
 
 \add_filter( 'embed_privacy_content', function( $content, $provider) {
 
+
     	$test = $_SERVER['SERVER_NAME'];
 		$html = 'Embed not set';
 		$media = '';
@@ -35,7 +36,7 @@ define( 'FD_EMBEDPRIVACY', '1.0.1' );
 		else if(str_contains($provider, 'facebook.com')) {
 			$media = \plugins_url( '../assets/images/embed-facebook.png', __FILE__ );
 		}
-		else if(str_contains($provider, 'x.com') || str_contains($provider, 'twitter.com')) {
+		else if(str_contains($provider, 'x.com') || str_contains($provider, 'twitter.com')  || str_contains($provider, 't.co')) {
 			$media = \plugins_url( '../assets/images/embed-twitter.png', __FILE__ );
 		}
 		else if(str_contains($provider, 'instagram.com')) {
@@ -50,11 +51,15 @@ define( 'FD_EMBEDPRIVACY', '1.0.1' );
 		else if(str_contains($provider, 'tiktok.com')) {
 			$media = \plugins_url( '../assets/images/embed-tiktok.png', __FILE__ );
 		}
+
+		if (str_contains($provider, 'www')) {
+			$provider = str_replace('www.', '', $provider);
+		}
 		
 		if(str_contains($test, '.dk')) {
 			$html =
-			'<h5 class="fd-embed-privacy-content-line1">'
-			. 'Klik her for at vise eksternt indhold fra %s, anbefalet af redaktionen. Du kan altid aktivere og deaktivere tredjepartsindhold.'
+			'<h5 class="fd-embed-privacy-content-line1" style="font-size: 20px">'
+			. 'Klik her for at vise eksternt indhold fra <b>%s</b>, anbefalet af redaktionen. Du kan altid aktivere og deaktivere tredjepartsindhold.'
 			. '</h5>'
 			. '<div style="width: 280px; height: 150px; margin: 0 auto; padding: 30px 0;">'
 			. '<img style="width:100%%; height:100%%; object-fit:contain; margin: 0 auto;" src="%s" /></div>'
@@ -64,8 +69,8 @@ define( 'FD_EMBEDPRIVACY', '1.0.1' );
 		}
 		elseif(str_contains($test, '.de')) {
 			$html =
-			'<h5 class="fd-embed-privacy-content-line1">'
-			. 'Klicken Sie hier, um externe Inhalte von %s anzuzeigen, empfohlen von der Redaktion. Sie können Drittanbieter-Inhalte jederzeit aktivieren oder deaktivieren.'
+			'<h5 class="fd-embed-privacy-content-line1" style="font-size: 20px">'
+			. 'Klicken Sie hier, um externe Inhalte von <b>%s</b> anzuzeigen, <br/> <span  style="font-size: 14px">- Sie können Drittanbieter-Inhalte jederzeit aktivieren oder deaktivieren.</span>'
 			. '</h5>'
 			. '<div style="width: 280px; height: 150px; margin: 0 auto; padding: 30px 0;">'
 			. '<img style="width:100%%; height:100%%; object-fit:contain; margin: 0 auto;" src="%s" /></div>'
@@ -75,8 +80,8 @@ define( 'FD_EMBEDPRIVACY', '1.0.1' );
 		}
 		elseif(str_contains($test, 'se')) {
 			$html =
-			'<h5 class="fd-embed-privacy-content-line1">'
-			. 'Klicka här för att visa externt innehåll från %s, rekommenderat av redaktionen. Du kan alltid aktivera och inaktivera tredjepartsinnehåll.'
+			'<h5 class="fd-embed-privacy-content-line1" style="font-size: 20px">'
+			. 'Klicka för att visa externt innehåll från <b>%s</b>, <br/> <span  style="font-size: 14px">- Du kan alltid aktivera och inaktivera tredjepartsinnehåll.</span>'
 			. '</h5>'
 			. '<div style="width: 280px; height: 150px; margin: 0 auto; padding: 30px 0;">'
 			. '<img style="width:100%%; height:100%%; object-fit:contain; margin: 0 auto;" src="%s" /></div>'
@@ -86,8 +91,8 @@ define( 'FD_EMBEDPRIVACY', '1.0.1' );
 		}
 		elseif(str_contains($test, 'no')) {
 			$html =
-			'<h5 class="fd-embed-privacy-content-line1">'
-			. 'Klikk her for å vise eksternt innhold fra %s, anbefalt av redaksjonen. Du kan alltid aktivere og deaktivere tredjepartsinnhold.'
+			'<h5 class="fd-embed-privacy-content-line1" style="font-size: 20px">'
+			. 'Klikk for å vise eksternt innhold fra <b>%s</b>, <br/> <span  style="font-size: 14px">- Du kan alltid aktivere og deaktivere tredjepartsinnhold.</span>'
 			. '</h5>'
 			. '<div style="width: 280px; height: 150px; margin: 0 auto; padding: 30px 0;">'
 			. '<img style="width:100%%; height:100%%; object-fit:contain; margin: 0 auto;" src="%s" /></div>'
@@ -97,8 +102,8 @@ define( 'FD_EMBEDPRIVACY', '1.0.1' );
 		}
 		else {
 			$html =
-			'<h5 class="fd-embed-privacy-content-line1">'
-			. 'Click here to display external content from %s, recommended by the editors. You can always enable and disable third-party content.'
+			'<h5 style="font-size: 20px" class="fd-embed-privacy-content-line1">'
+			. 'Click to display external content from <b>%s</b>, <br/> <span  style="font-size: 14px">- You can always enable and disable third-party content.</b>'
 			. '</h5>'
 			.'<div style="width: 280px; height: 150px; margin: 0 auto; padding: 30px 0;">'
 			. '<img style="width:100%%; height:100%%; object-fit:contain; margin: 0 auto;" src="%s" /></div>'

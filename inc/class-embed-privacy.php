@@ -140,32 +140,45 @@ class Embed_Privacy {
 	 * @since    1.2.0
 	 */
 	public function init() {
+		$uri = $_SERVER['REQUEST_URI'];
+		
+		//List of uri
+		$blacklist = [
+			'/slideshows/',
+			'/feed/',
+			'/feeds/'
+		];
+		//Disabling the plugin, if the uri contains anything in $blacklist.
+		if(!empty($blacklist)) {
+			foreach($blacklist as $item) {
+				if(str_contains($uri, $item)) {
+					return;
+				}
+			}
+		}
 		// actions
 		\add_action( 'init', [ $this, 'load_textdomain' ], 0 );
 		\add_action( 'init', [ $this, 'register_assets' ] );
 		\add_action( 'init', [ $this, 'set_post_type' ], 5 );
 		\add_action( 'save_post_epi_embed', [ $this, 'preserve_backslashes' ] );
 		\add_action( 'wp_enqueue_scripts', [ $this, 'deregister_assets' ], 100 );
-
 		// filters
 		if ( ! $this->usecache ) {
 			// set ttl to 0 in admin
 			\add_filter( 'oembed_ttl', '__return_zero' );
 		}
-
 		\add_filter( 'acf_the_content', [ $this, 'replace_embeds' ] );
 		\add_filter( 'do_shortcode_tag', [ $this, 'replace_embeds' ], 10, 2 );
 		\add_filter( 'do_shortcode_tag', [ $this, 'replace_maps_marker' ], 10, 2 );
-		\add_filter( 'embed_oembed_html', [ $this, 'replace_embeds_oembed' ], 10, 3 );
+		\add_filter( 'embed_oembed_html', [ $this, 'replace_embeds_oembed' ], 10, 3 );  //feed problem
 		\add_filter( 'embed_privacy_widget_output', [ $this, 'replace_embeds' ] );
 		\add_filter( 'et_builder_get_oembed', [ $this, 'replace_embeds_divi' ], 10, 2 );
 		\add_filter( 'pll_get_post_types', [ $this, 'register_polylang_post_type' ], 10, 2 );
-		\add_filter( 'the_content', [ $this, 'replace_embeds' ] );
+		\add_filter( 'the_content', [ $this, 'replace_embeds' ] );  //feed problem
 		\add_filter( 'wp_video_shortcode', [ $this, 'replace_video_shortcode' ], 10, 2 );
 		\add_shortcode( 'embed_privacy_opt_out', [ $this, 'shortcode_opt_out' ] );
 		\register_activation_hook( $this->plugin_file, [ $this, 'clear_embed_cache' ] );
 		\register_deactivation_hook( $this->plugin_file, [ $this, 'clear_embed_cache' ] );
-
 		Admin::get_instance()->init();
 		Fields::get_instance()->init();
 		Thumbnails::get_instance()->init();
@@ -1039,7 +1052,7 @@ class Embed_Privacy {
 								} else if ( \strpos( $class, 'instagram' ) !== false ) {
 									$parsed_url = [ 'host' => 'instagram.com' ];
 								} else {
-									return $content;
+						return $content;
 								}
 							}
 						} else {
@@ -1090,9 +1103,24 @@ class Embed_Privacy {
 				$args['height']      = ! empty( $element->getAttribute( 'height' ) ) ? $element->getAttribute( 'height' ) : 0;
 				$args['width']       = ! empty( $element->getAttribute( 'width' ) ) ? $element->getAttribute( 'width' ) : 0;
 
+				// for blockquote, include following script tag if it exists
+				$embed_output = $dom->saveHTML( $element );
+				if ( $tag === 'blockquote' ) {
+					// find the next sibling element after blockquote
+					$next_sibling = $element->nextSibling;
+					while ( $next_sibling !== null ) {
+						// skip text nodes and whitespace
+						if ( $next_sibling instanceof DOMElement && $next_sibling->nodeName === 'script' ) {
+							$embed_output .= $dom->saveHTML( $next_sibling );
+							break;
+						}
+						$next_sibling = $next_sibling->nextSibling;
+					}
+				}
+
 				// get overlay template as DOM element
 				$template_dom->loadHTML(
-					'<html><meta charset="utf-8">' . str_replace( '%', '%_epi_', $this->get_output_template( $embed_provider, $embed_provider_lowercase, $dom->saveHTML( $element ), $args ) ) . '</html>',
+					'<html><meta charset="utf-8">' . str_replace( '%', '%_epi_', $this->get_output_template( $embed_provider, $embed_provider_lowercase, $embed_output, $args ) ) . '</html>',
 					\LIBXML_HTML_NOIMPLIED | \LIBXML_HTML_NODEFDTD
 				);
 				$overlay = null;
@@ -1106,10 +1134,24 @@ class Embed_Privacy {
 
 				// store the elements to replace (see regressive loop down below)
 				if ( $overlay instanceof DOMNode || $overlay instanceof DOMElement ) {
-					$replacements[] = [
+					$replacement_data = [
 						'element' => $element,
 						'replace' => $dom->importNode( $overlay, true ),
 					];
+					
+					// for blockquote, also store the following script tag to remove it
+					if ( $tag === 'blockquote' ) {
+						$next_sibling = $element->nextSibling;
+						while ( $next_sibling !== null ) {
+							if ( $next_sibling instanceof DOMElement && $next_sibling->nodeName === 'script' ) {
+								$replacement_data['script_to_remove'] = $next_sibling;
+								break;
+							}
+							$next_sibling = $next_sibling->nextSibling;
+						}
+					}
+					
+					$replacements[] = $replacement_data;
 				}
 
 				// reset embed provider name
@@ -1134,6 +1176,11 @@ class Embed_Privacy {
 					foreach ( $replacements as $replacement ) {
 						if ( $replacement['element'] === $element ) {
 							$element->parentNode->replaceChild( $replacement['replace'], $replacement['element'] );
+							
+							// for blockquote, also remove the following script tag if it exists
+							if ( isset( $replacement['script_to_remove'] ) && $replacement['script_to_remove']->parentNode !== null ) {
+								$replacement['script_to_remove']->parentNode->removeChild( $replacement['script_to_remove'] );
+							}
 						}
 					}
 
